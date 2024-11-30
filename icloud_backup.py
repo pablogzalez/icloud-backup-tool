@@ -94,6 +94,12 @@ def backup_photos_to_local(api, album_name, dest_directory):
         checked_photos_count += 1
         if photo.filename not in existing_photos:
             photos_to_backup.append(photo)
+        else:
+            # Assume photo.filename contains the file name as a string
+            file_path = args.destination + "/" + photo.filename
+            # Check if the file exists and is zero bytes on disk and still needs to be downloaded
+            if os.path.exists(file_path) and os.path.getsize(file_path) == 0:
+                photos_to_backup.append(photo)
         print(f"🔍 Verificando fotos: {checked_photos_count}", end='\r')
 
     stats['items_count'] = checked_photos_count
